@@ -1,8 +1,8 @@
 name: appmetrica_sdk
 description: A Flutter plugin for Yandex AppMetrica SDK.
 version: 0.0.1
-author:
-homepage:
+author: Andrew Belousoff <andrew@emallstudio.com>
+homepage: https://github.com/EMALLStudio/appmetrica_sdk
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
