@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:appmetrica_sdk/appmetrica_sdk.dart';
 
 void main() async {
-  AppmetricaSdk().reportEvent(name: 'Updates installed');
   /// Initializing the AppMetrica SDK.
   await AppmetricaSdk()
       .activate(apiKey: 'db2206ed-c61a-43aa-b95c-6912f60bd25e');
