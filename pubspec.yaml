@@ -1,5 +1,6 @@
 name: appmetrica_sdk
-description: A Flutter plugin for Yandex AppMetrica SDK.
+description: A Flutter plugin for Yandex AppMetrica SDK, a marketing platform for
+  app install attribution, app analytics, and push campaigns.
 version: 0.0.1
 author: Andrew Belousoff <andrew@emallstudio.com>
 homepage: https://github.com/EMALLStudio/appmetrica_sdk
