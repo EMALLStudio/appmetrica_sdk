@@ -71,7 +71,7 @@ class _MyAppState extends State<MyApp> {
                   children: <Widget>[
                     Container(
                       child: Text(
-                          'Appmetrica SDK Library version: $_libraryVersion\n'),
+                          'AppMetrica SDK Library version: $_libraryVersion\n'),
                     ),
                     RaisedButton(
                       child: Text('Send a custom event'),
