@@ -1,5 +1,7 @@
 # appmetrica_sdk
 
+[![pub package](https://img.shields.io/pub/v/appmetrica_sdk.svg)](https://pub.dev/packages/appmetrica_sdk)
+
 A Flutter plugin for [Yandex AppMetrica SDK][SITE].
 
 ## Usage
