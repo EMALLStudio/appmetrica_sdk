@@ -54,6 +54,7 @@
     NSInteger sessionTimeout = [call.arguments[@"sessionTimeout"] integerValue];
     NSNumber *locationTracking = [NSNumber numberWithBool:call.arguments[@"locationTracking"]];
     NSNumber *statisticsSending = [NSNumber numberWithBool:call.arguments[@"statisticsSending"]];
+    NSNumber *crashReporting = [NSNumber numberWithBool:call.arguments[@"crashReporting"]];
     // Creating an extended library configuration.
     YMMYandexMetricaConfiguration *configuration = [[YMMYandexMetricaConfiguration alloc] initWithApiKey:apiKey];
     // Setting up the configuration.
@@ -61,6 +62,7 @@
     configuration.sessionTimeout = sessionTimeout;
     configuration.locationTracking = [locationTracking boolValue];
     configuration.statisticsSending = [statisticsSending boolValue];
+    configuration.crashReporting = [crashReporting boolValue];
     // Initializing the AppMetrica SDK.
     [YMMYandexMetrica activateWithConfiguration:configuration];
     result(nil);
@@ -70,7 +72,7 @@
     NSString* name = call.arguments[@"name"];
 
     if (![call.arguments[@"attributes"] isEqual:[NSNull null]]) {
-        NSDictionary* attributes = call.arguments[@"attributes"];        
+        NSDictionary* attributes = call.arguments[@"attributes"];
         [YMMYandexMetrica reportEvent:name
             parameters:attributes
             onFailure:^(NSError *error) {
@@ -85,7 +87,7 @@
         ];
     }
 
-    result(nil);    
+    result(nil);
 }
 
 
@@ -109,7 +111,7 @@
 }
 
 - (void)handleReportUserProfileCustomNumber:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSString* key = call.arguments[@"key"];    
+    NSString* key = call.arguments[@"key"];
 
     YMMMutableUserProfile* userProfile =[ [YMMMutableUserProfile alloc] init];
     if (![call.arguments[@"value"] isEqual:[NSNull null]]) {
@@ -128,7 +130,7 @@
 }
 
 - (void)handleReportUserProfileCustomBoolean:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSString* key = call.arguments[@"key"];    
+    NSString* key = call.arguments[@"key"];
 
     YMMMutableUserProfile* userProfile =[ [YMMMutableUserProfile alloc] init];
     if (![call.arguments[@"value"] isEqual:[NSNull null]]) {

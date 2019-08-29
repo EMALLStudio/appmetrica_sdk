@@ -40,7 +40,9 @@ class _MyAppState extends State<MyApp> {
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
-    if (!mounted) return;
+    if (!mounted) {
+      return;
+    }
 
     setState(() {
       _libraryVersion = libraryVersion;
@@ -55,7 +57,7 @@ class _MyAppState extends State<MyApp> {
               title: const Text('Plugin example app'),
             ),
             body: Container(
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               child: Center(
                 child: Column(
                   children: <Widget>[
@@ -64,30 +66,30 @@ class _MyAppState extends State<MyApp> {
                           'AppMetrica SDK Library version: $_libraryVersion\n'),
                     ),
                     RaisedButton(
-                      child: Text('Send a custom event'),
+                      child: const Text('Send a custom event'),
                       onPressed: () {
                         /// Sending a custom event without nested parameters.
                         AppmetricaSdk().reportEvent(name: 'Updates installed');
                       },
                     ),
                     RaisedButton(
-                      child: Text('Send a custom event with nested parameters'),
+                      child: const Text('Send a custom event with nested parameters'),
                       onPressed: () {
                         /// Sending a custom event with nested parameters.
                         AppmetricaSdk().reportEvent(
                             name: 'Current app statistics',
-                            attributes: {
+                            attributes: <String, dynamic>{
                               'Application': 'com.company.myapp.awesomeapp',
                               'Audience': 1000000000,
                               'Product price in €': 10000000.99,
-                              'nested map': {
+                              'nested map': <String, dynamic>{
                                 'strategies': 'Age of Empires',
                               },
                             });
                       },
                     ),
                     RaisedButton(
-                      child: Text('Send user profile attributes'),
+                      child: const Text('Send user profile attributes'),
                       onPressed: () {
                         /// Sending profile custom string attribute.
                         AppmetricaSdk().reportUserProfileCustomString(

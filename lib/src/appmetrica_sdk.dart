@@ -26,11 +26,13 @@ class AppmetricaSdk {
   /// The [sessionTimeout] sets the session timeout in seconds. The default value is 10 (minimum allowed value).
   /// The [locationTracking] enables/disables sending location of the device. By default, sending is enabled.
   /// The [statisticsSending] enables/disables sending statistics to the AppMetrica server. By default, sending is enabled.
+  /// The [crashReporting] indicating that sending app crashes is enabled. By default, sending is enabled.
   Future<void> activate(
       {@required String apiKey,
-        int sessionTimeout = 10,
-        bool locationTracking = true,
-        bool statisticsSending = true}) async {
+      int sessionTimeout = 10,
+      bool locationTracking = true,
+      bool statisticsSending = true,
+      bool crashReporting = true}) async {
     if (apiKey == null) {
       throw ArgumentError.notNull('apiKey');
     }
@@ -43,11 +45,15 @@ class AppmetricaSdk {
     if (statisticsSending == null) {
       throw ArgumentError.notNull('statisticsSending');
     }
+    if (crashReporting == null) {
+      throw ArgumentError.notNull('crashReporting');
+    }
     await _channel.invokeMethod<void>('activate', <String, dynamic>{
       'apiKey': apiKey,
       'sessionTimeout': sessionTimeout,
       'locationTracking': locationTracking,
       'statisticsSending': statisticsSending,
+      'crashReporting': crashReporting,
     });
 
     /// Set the API Key after activation.

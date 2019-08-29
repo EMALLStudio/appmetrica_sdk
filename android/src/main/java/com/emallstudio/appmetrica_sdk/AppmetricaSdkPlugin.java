@@ -49,7 +49,7 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
         switch (call.method) {
             case "activate":
                 handleActivate(call, result);
-                break;          
+                break;
             case "reportEvent":
                 handleReportEvent(call, result);
                 break;
@@ -92,12 +92,14 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             final int sessionTimeout = (int) arguments.get("sessionTimeout");
             final boolean locationTracking = (boolean) arguments.get("locationTracking");
             final boolean statisticsSending = (boolean) arguments.get("statisticsSending");
+            final boolean crashReporting = (boolean) arguments.get("crashReporting");
             // Creating an extended library configuration.
             YandexMetricaConfig config = YandexMetricaConfig.newConfigBuilder(apiKey)
                     .withLogs()
                     .withSessionTimeout(sessionTimeout)
                     .withLocationTracking(locationTracking)
                     .withStatisticsSending(statisticsSending)
+                    .withCrashReporting(crashReporting)
                     .build();
             // Initializing the AppMetrica SDK.
             YandexMetrica.activate(mContext, config);
@@ -272,5 +274,5 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             Log.e(TAG, e.getMessage(), e);
             result.error("Error enable sending statistics", e.getMessage(), null);
         }
-    }    
+    }
 }
