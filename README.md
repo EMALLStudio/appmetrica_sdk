@@ -139,6 +139,8 @@ class _MyAppState extends State<MyApp> {
 ## Documentation
 Common documentation available on [AppMetrica official site][DOCUMENTATION].
 
+## Bugs or Requests
+If you encounter any problems feel free to open an [issue](https://github.com/EMALLStudio/appmetrica_sdk/issues/new). If you feel the library is missing a feature, please raise a [ticket](https://github.com/EMALLStudio/appmetrica_sdk/issues/new) on GitHub and we'll look into it. Pull request are also welcome. 
 
 [SITE]: https://appmetrica.yandex.com "Yandex AppMetrica site"
 [DOCUMENTATION]: https://appmetrica.yandex.com/docs/quick-start/concepts/quick-start.html "Yandex AppMetrica documentation"
