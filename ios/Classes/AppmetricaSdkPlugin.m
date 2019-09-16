@@ -52,17 +52,17 @@
 - (void)handleActivate:(FlutterMethodCall*)call result:(FlutterResult)result {
     NSString* apiKey = call.arguments[@"apiKey"];
     NSInteger sessionTimeout = [call.arguments[@"sessionTimeout"] integerValue];
-    NSNumber *locationTracking = [NSNumber numberWithBool:call.arguments[@"locationTracking"]];
-    NSNumber *statisticsSending = [NSNumber numberWithBool:call.arguments[@"statisticsSending"]];
-    NSNumber *crashReporting = [NSNumber numberWithBool:call.arguments[@"crashReporting"]];
+    BOOL locationTracking = [call.arguments[@"locationTracking"] boolValue];
+    BOOL statisticsSending = [call.arguments[@"statisticsSending"] boolValue];
+    BOOL crashReporting = [call.arguments[@"crashReporting"] boolValue];
     // Creating an extended library configuration.
     YMMYandexMetricaConfiguration *configuration = [[YMMYandexMetricaConfiguration alloc] initWithApiKey:apiKey];
     // Setting up the configuration.
     configuration.logs = YES;
     configuration.sessionTimeout = sessionTimeout;
-    configuration.locationTracking = [locationTracking boolValue];
-    configuration.statisticsSending = [statisticsSending boolValue];
-    configuration.crashReporting = [crashReporting boolValue];
+    configuration.locationTracking = locationTracking;
+    configuration.statisticsSending = statisticsSending;
+    configuration.crashReporting = crashReporting;
     // Initializing the AppMetrica SDK.
     [YMMYandexMetrica activateWithConfiguration:configuration];
     result(nil);
@@ -134,8 +134,8 @@
 
     YMMMutableUserProfile* userProfile =[ [YMMMutableUserProfile alloc] init];
     if (![call.arguments[@"value"] isEqual:[NSNull null]]) {
-        NSNumber *value = [NSNumber numberWithBool:call.arguments[@"value"]];
-        [userProfile apply:[[YMMProfileAttribute customBool:key] withValue:[value boolValue]]];
+        BOOL value = [call.arguments[@"value"] boolValue];
+        [userProfile apply:[[YMMProfileAttribute customBool:key] withValue:value]];
     } else {
         [userProfile apply:[[YMMProfileAttribute customBool:key] withValueReset]];
     }
@@ -182,8 +182,8 @@
 - (void)handleReportUserProfileNotificationsEnabled:(FlutterMethodCall*)call result:(FlutterResult)result {
     YMMMutableUserProfile* userProfile =[ [YMMMutableUserProfile alloc] init];
     if (![call.arguments[@"notificationsEnabled"] isEqual:[NSNull null]]) {
-        NSNumber *notificationsEnabled = [NSNumber numberWithBool:call.arguments[@"notificationsEnabled"]];
-        [userProfile apply:[[YMMProfileAttribute notificationsEnabled] withValue:[notificationsEnabled boolValue]]];
+        BOOL notificationsEnabled = [call.arguments[@"notificationsEnabled"] boolValue];
+        [userProfile apply:[[YMMProfileAttribute notificationsEnabled] withValue:notificationsEnabled]];
     } else {
         [userProfile apply:[[YMMProfileAttribute notificationsEnabled] withValueReset]];
     }
@@ -197,14 +197,14 @@
 }
 
 - (void)handleSetStatisticsSending:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSNumber *statisticsSending = [NSNumber numberWithBool:call.arguments[@"statisticsSending"]];
+    BOOL statisticsSending = [call.arguments[@"statisticsSending"] boolValue];
 
-    [YMMYandexMetrica setStatisticsSending:[statisticsSending boolValue]];
+    [YMMYandexMetrica setStatisticsSending:statisticsSending];
 
     result(nil);
 }
 
-- (void)handleGetLibraryVersion:(FlutterMethodCall*)call result:(FlutterResult)result {   
+- (void)handleGetLibraryVersion:(FlutterMethodCall*)call result:(FlutterResult)result {
     result([YMMYandexMetrica libraryVersion]);
 }
 
