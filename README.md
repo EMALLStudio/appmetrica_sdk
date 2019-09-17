@@ -1,6 +1,7 @@
 # appmetrica_sdk
 
 [![pub package](https://img.shields.io/pub/v/appmetrica_sdk.svg)](https://pub.dev/packages/appmetrica_sdk)
+[![CircleCI](https://circleci.com/gh/EMALLStudio/appmetrica_sdk.svg?style=svg)](https://circleci.com/gh/EMALLStudio/appmetrica_sdk)
 
 A Flutter plugin for [Yandex AppMetrica SDK][SITE].
 
