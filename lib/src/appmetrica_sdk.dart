@@ -183,4 +183,15 @@ class AppmetricaSdk {
     }
     return await _channel.invokeMethod<String>('getLibraryVersion');
   }
+
+  /// Sets the ID of the user profile.
+  /// Required for predefined profile attributes like Name or Notifications enabled.
+  Future<void> setUserProfileID({@required String userProfileID}) async {
+    if (_apiKey == null) {
+      throw 'The API key is not set';
+    }
+    await _channel.invokeMethod<void>('setUserProfileID', <String, dynamic>{
+      'userProfileID': userProfileID,
+    });
+  }
 }

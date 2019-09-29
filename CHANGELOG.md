@@ -1,3 +1,9 @@
+## 0.0.3
+
+* Add `setUserProfileID` function (required for predefined profile attributes).
+* Update example code.
+* Upgrade dependencies.
+
 ## 0.0.2+1
 
 * iOS polishing.

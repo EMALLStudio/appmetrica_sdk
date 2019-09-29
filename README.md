@@ -86,7 +86,8 @@ class _MyAppState extends State<MyApp> {
                       },
                     ),
                     RaisedButton(
-                      child: const Text('Send a custom event with nested parameters'),
+                      child: const Text(
+                          'Send a custom event with nested parameters'),
                       onPressed: () {
                         /// Sending a custom event with nested parameters.
                         AppmetricaSdk().reportEvent(
@@ -120,6 +121,10 @@ class _MyAppState extends State<MyApp> {
                         AppmetricaSdk().reportUserProfileCustomCounter(
                             key: 'counter_attribute', delta: 1);
 
+                        /// Sets the ID of the user profile. Required for predefined
+                        /// profile attributes like Name or Notifications enabled.
+                        AppmetricaSdk().setUserProfileID(userProfileID: 'id');
+
                         /// Sending profile predefined user name attribute.
                         AppmetricaSdk()
                             .reportUserProfileUserName(userName: 'John');
@@ -141,7 +146,7 @@ class _MyAppState extends State<MyApp> {
 Common documentation available on [AppMetrica official site][DOCUMENTATION].
 
 ## Bugs or Requests
-If you encounter any problems feel free to open an [issue](https://github.com/EMALLStudio/appmetrica_sdk/issues/new). If you feel the library is missing a feature, please raise a [ticket](https://github.com/EMALLStudio/appmetrica_sdk/issues/new) on GitHub and we'll look into it. Pull request are also welcome. 
+If you encounter any problems feel free to open an [issue](https://github.com/EMALLStudio/appmetrica_sdk/issues/new). If you feel the library is missing a feature, please raise a [ticket](https://github.com/EMALLStudio/appmetrica_sdk/issues/new) on GitHub and we'll look into it. Pull request are also welcome.
 
 [SITE]: https://appmetrica.yandex.com "Yandex AppMetrica site"
 [DOCUMENTATION]: https://appmetrica.yandex.com/docs/quick-start/concepts/quick-start.html "Yandex AppMetrica documentation"

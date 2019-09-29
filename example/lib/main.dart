@@ -73,7 +73,8 @@ class _MyAppState extends State<MyApp> {
                       },
                     ),
                     RaisedButton(
-                      child: const Text('Send a custom event with nested parameters'),
+                      child: const Text(
+                          'Send a custom event with nested parameters'),
                       onPressed: () {
                         /// Sending a custom event with nested parameters.
                         AppmetricaSdk().reportEvent(
@@ -106,6 +107,10 @@ class _MyAppState extends State<MyApp> {
                         /// Sending profile custom attribute of the counter type.
                         AppmetricaSdk().reportUserProfileCustomCounter(
                             key: 'counter_attribute', delta: 1);
+
+                        /// Sets the ID of the user profile. Required for predefined
+                        /// profile attributes like Name or Notifications enabled.
+                        AppmetricaSdk().setUserProfileID(userProfileID: 'id');
 
                         /// Sending profile predefined user name attribute.
                         AppmetricaSdk()

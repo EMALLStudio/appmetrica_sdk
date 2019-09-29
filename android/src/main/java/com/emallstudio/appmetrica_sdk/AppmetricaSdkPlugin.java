@@ -77,6 +77,9 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             case "getLibraryVersion":
                 handleGetLibraryVersion(call, result);
                 break;
+            case "setUserProfileID":
+                handleSetUserProfileID(call, result);
+                break;
             default:
               result.notImplemented();
               break;
@@ -274,5 +277,19 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             Log.e(TAG, e.getMessage(), e);
             result.error("Error enable sending statistics", e.getMessage(), null);
         }
+    }
+
+    private void handleSetUserProfileID(MethodCall call, Result result) {
+        try {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> arguments = (Map<String, Object>) call.arguments;
+            final String userProfileID = (String) arguments.get("userProfileID");
+            YandexMetrica.setUserProfileID(userProfileID);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            result.error("Error sets the ID of the user profile", e.getMessage(), null);
+        }
+
+        result.success(null);
     }
 }

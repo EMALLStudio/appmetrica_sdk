@@ -36,6 +36,8 @@
       [self handleSetStatisticsSending:call result:result];
   } else if ([@"getLibraryVersion" isEqualToString:call.method]) {
       [self handleGetLibraryVersion:call result:result];
+  } else if ([@"setUserProfileID" isEqualToString:call.method]) {
+      [self handleSetUserProfileID:call result:result];
   } else {
       result(FlutterMethodNotImplemented);
   }
@@ -206,6 +208,14 @@
 
 - (void)handleGetLibraryVersion:(FlutterMethodCall*)call result:(FlutterResult)result {
     result([YMMYandexMetrica libraryVersion]);
+}
+
+- (void)handleSetUserProfileID:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* userProfileID = call.arguments[@"userProfileID"];
+
+    [YMMYandexMetrica setUserProfileID:userProfileID];
+
+    result(nil);
 }
 
 @end
