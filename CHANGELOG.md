@@ -1,3 +1,9 @@
+## 0.0.4
+
+* Upgrade AppMetrica SDK (Android 3.7.2/iOS 3.8.0).
+* Add `sendEventsBuffer` function. Sends stored events from the buffer.
+* Android only. Add `maxReportsInDatabaseCount` activation parameter - maximum number of events that can be stored in the database on the phone before being sent to AppMetrica.
+
 ## 0.0.3
 
 * Add `setUserProfileID` function (required for predefined profile attributes).

@@ -38,6 +38,8 @@
       [self handleGetLibraryVersion:call result:result];
   } else if ([@"setUserProfileID" isEqualToString:call.method]) {
       [self handleSetUserProfileID:call result:result];
+  } else if ([@"sendEventsBuffer" isEqualToString:call.method]) {
+      [self handleSendEventsBuffer:call result:result];
   } else {
       result(FlutterMethodNotImplemented);
   }
@@ -57,6 +59,7 @@
     BOOL locationTracking = [call.arguments[@"locationTracking"] boolValue];
     BOOL statisticsSending = [call.arguments[@"statisticsSending"] boolValue];
     BOOL crashReporting = [call.arguments[@"crashReporting"] boolValue];
+    NSInteger maxReportsInDatabaseCount = [call.arguments[@"maxReportsInDatabaseCount"] integerValue];
     // Creating an extended library configuration.
     YMMYandexMetricaConfiguration *configuration = [[YMMYandexMetricaConfiguration alloc] initWithApiKey:apiKey];
     // Setting up the configuration.
@@ -65,6 +68,8 @@
     configuration.locationTracking = locationTracking;
     configuration.statisticsSending = statisticsSending;
     configuration.crashReporting = crashReporting;
+    // maxReportsInDatabaseCount is not supported yet. Android only feature.
+    //configuration.maxReportsInDatabaseCount = maxReportsInDatabaseCount;
     // Initializing the AppMetrica SDK.
     [YMMYandexMetrica activateWithConfiguration:configuration];
     result(nil);
@@ -214,6 +219,12 @@
     NSString* userProfileID = call.arguments[@"userProfileID"];
 
     [YMMYandexMetrica setUserProfileID:userProfileID];
+
+    result(nil);
+}
+
+- (void)handleSendEventsBuffer:(FlutterMethodCall*)call result:(FlutterResult)result {
+    [YMMYandexMetrica sendEventsBuffer];
 
     result(nil);
 }

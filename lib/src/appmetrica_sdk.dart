@@ -27,12 +27,14 @@ class AppmetricaSdk {
   /// The [locationTracking] enables/disables sending location of the device. By default, sending is enabled.
   /// The [statisticsSending] enables/disables sending statistics to the AppMetrica server. By default, sending is enabled.
   /// The [crashReporting] indicating that sending app crashes is enabled. By default, sending is enabled.
+  /// Android only. The [maxReportsInDatabaseCount] is maximum number of events that can be stored in the database on the phone before being sent to AppMetrica. If there are more events, old records will begin to be deleted. The default value is 1000 (allowed values from 100 to 10000).
   Future<void> activate(
       {@required String apiKey,
       int sessionTimeout = 10,
       bool locationTracking = true,
       bool statisticsSending = true,
-      bool crashReporting = true}) async {
+      bool crashReporting = true,
+      int maxReportsInDatabaseCount = 1000}) async {
     if (apiKey == null) {
       throw ArgumentError.notNull('apiKey');
     }
@@ -48,12 +50,16 @@ class AppmetricaSdk {
     if (crashReporting == null) {
       throw ArgumentError.notNull('crashReporting');
     }
+    if (crashReporting == null) {
+      throw ArgumentError.notNull('maxReportsInDatabaseCount');
+    }
     await _channel.invokeMethod<void>('activate', <String, dynamic>{
       'apiKey': apiKey,
       'sessionTimeout': sessionTimeout,
       'locationTracking': locationTracking,
       'statisticsSending': statisticsSending,
       'crashReporting': crashReporting,
+      'maxReportsInDatabaseCount': maxReportsInDatabaseCount,
     });
 
     /// Set the API Key after activation.
@@ -193,5 +199,17 @@ class AppmetricaSdk {
     await _channel.invokeMethod<void>('setUserProfileID', <String, dynamic>{
       'userProfileID': userProfileID,
     });
+  }
+
+  /// Sends stored events from the buffer.
+  /// AppMetrica SDK does not send an event immediately after it occurred.
+  /// The library stores event data in the buffer. The sendEventsBuffer() method
+  /// sends data from the buffer and flushes it. Use the method to force sending
+  /// stored events after passing important checkpoints of user scenarios.
+  Future<void> sendEventsBuffer() async {
+    if (_apiKey == null) {
+      throw 'The API key is not set';
+    }
+    return await _channel.invokeMethod<String>('sendEventsBuffer');
   }
 }

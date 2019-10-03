@@ -80,6 +80,9 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             case "setUserProfileID":
                 handleSetUserProfileID(call, result);
                 break;
+            case "sendEventsBuffer":
+                handleSendEventsBuffer(call, result);
+                break;
             default:
               result.notImplemented();
               break;
@@ -96,6 +99,7 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             final boolean locationTracking = (boolean) arguments.get("locationTracking");
             final boolean statisticsSending = (boolean) arguments.get("statisticsSending");
             final boolean crashReporting = (boolean) arguments.get("crashReporting");
+            final int maxReportsInDatabaseCount = (int) arguments.get("maxReportsInDatabaseCount");
             // Creating an extended library configuration.
             YandexMetricaConfig config = YandexMetricaConfig.newConfigBuilder(apiKey)
                     .withLogs()
@@ -103,6 +107,7 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
                     .withLocationTracking(locationTracking)
                     .withStatisticsSending(statisticsSending)
                     .withCrashReporting(crashReporting)
+                    .withMaxReportsInDatabaseCount(maxReportsInDatabaseCount)
                     .build();
             // Initializing the AppMetrica SDK.
             YandexMetrica.activate(mContext, config);
@@ -288,6 +293,18 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             result.error("Error sets the ID of the user profile", e.getMessage(), null);
+        }
+
+        result.success(null);
+    }
+
+    private void handleSendEventsBuffer(MethodCall call, Result result) {
+        try {
+            YandexMetrica.sendEventsBuffer();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            result.error("Error sending stored events from the buffer", e.getMessage(), null);
+
         }
 
         result.success(null);
