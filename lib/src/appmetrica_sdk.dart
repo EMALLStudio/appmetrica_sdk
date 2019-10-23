@@ -17,6 +17,7 @@ class AppmetricaSdk {
     }
     return _instance;
   }
+
   AppmetricaSdk.private(this._channel);
 
   /// Initializes the library in an application with given parameters.
@@ -212,4 +213,78 @@ class AppmetricaSdk {
     }
     return await _channel.invokeMethod<String>('sendEventsBuffer');
   }
+
+  Future<void> reportRevenueWithoutValidation(
+      {@required String price,
+      @required String currency,
+      @required String productId,
+      @required int quantity,
+      @required String source,
+      @required String orderId}) async {
+    _checkRevenueRequiredParams(price, currency, productId, quantity, source);
+    if (orderId == null) {
+      throw ArgumentError.notNull('orderId');
+    }
+    await _channel.invokeMethod<void>('reportRevenueWithoutValidation', <String, dynamic>{
+      'price': price,
+      'currency': currency,
+      'productId': productId,
+      'quantity': quantity,
+      'source': source,
+      'orderId': orderId
+    });
+  }
+
+  Future<void> reportRevenueWithValidation(
+      {@required String price,
+      @required String currency,
+      @required String productId,
+      @required int quantity,
+      @required String source,
+      //Android only
+      String originalJSON,
+      //Android only
+      String signature,
+      //iOS only
+      String transactionId}) async {
+    _checkRevenueRequiredParams(price, currency, productId, quantity, source);
+    await _channel.invokeMethod<void>('reportRevenueWithValidation', <String, dynamic>{
+      'price': price,
+      'currency': currency,
+      'productId': productId,
+      'quantity': quantity,
+      'source': source,
+      'originalJSON': originalJSON,
+      'signature': signature,
+      'transactionId': transactionId
+    });
+  }
+
+  void _checkRevenueRequiredParams(
+    String price,
+    String currency,
+    String productId,
+    int quantity,
+    String source,
+  ) {
+    if (_apiKey == null) {
+      throw 'The API key is not set';
+    }
+    if (price == null) {
+      throw ArgumentError.notNull('price');
+    }
+    if (currency == null) {
+      throw ArgumentError.notNull('currency');
+    }
+    if (productId == null) {
+      throw ArgumentError.notNull('productId');
+    }
+    if (quantity == null) {
+      throw ArgumentError.notNull('quantity');
+    }
+    if (source == null) {
+      throw ArgumentError.notNull('source');
+    }
+  }
+
 }

@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.util.SparseArray;
+
+import java.util.Currency;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodCall;
@@ -20,6 +22,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.view.FlutterView;
 
+import com.yandex.metrica.Revenue;
 import com.yandex.metrica.YandexMetrica;
 import com.yandex.metrica.YandexMetricaConfig;
 import com.yandex.metrica.profile.Attribute;
@@ -83,7 +86,13 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             case "sendEventsBuffer":
                 handleSendEventsBuffer(call, result);
                 break;
-            default:
+	        case "reportRevenueWithoutValidation":
+		        handleReportRevenueWithoutValidation(call, result);
+		        break;
+	        case "reportRevenueWithValidation":
+		        handleReportRevenueWithValidation(call, result);
+		        break;
+	        default:
               result.notImplemented();
               break;
           }
@@ -309,4 +318,72 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
 
         result.success(null);
     }
+	
+	
+	
+	private void handleReportRevenueWithoutValidation(MethodCall call, Result result) {
+		try {
+			@SuppressWarnings("unchecked") Map<String, Object> arguments =
+					(Map<String, Object>) call.arguments;
+			final String price = (String) arguments.get("price");
+			final String currency = (String) arguments.get("currency");
+			final String productId = (String) arguments.get("productId");
+			final int quantity = (int) arguments.get("quantity");
+			final String orderId = (String) arguments.get("orderId");
+			final String source = (String) arguments.get("source");
+			String payload = String.format("{\"OrderID\":\"%s\", \"source\":\"%s\"}",
+			                               orderId,
+			                               source);
+			// Creating the Revenue instance.
+			Revenue revenue = Revenue.newBuilderWithMicros(Long.valueOf(price),
+			                                               Currency.getInstance(currency))
+			                         .withProductID(productId)
+			                         .withQuantity(quantity)
+			                         // To group purchases, pass the OrderID parameter in the
+			                         // .withPayload(String payload) method.
+			                         .withPayload(payload)
+			                         .build();
+			YandexMetrica.reportRevenue(revenue);
+		} catch(Exception e) {
+			Log.e(TAG, e.getMessage(), e);
+			result.error("Error report revenue", e.getMessage(), null);
+		}
+		result.success(null);
+	}
+	
+	private void handleReportRevenueWithValidation(MethodCall call, Result result) {
+		try {
+			@SuppressWarnings("unchecked") Map<String, Object> arguments =
+					(Map<String, Object>) call.arguments;
+			final String originalJSON = (String) arguments.get("originalJSON");
+			final String signature = (String) arguments.get("signature");
+			final String price = (String) arguments.get("price");
+			final String currency = (String) arguments.get("currency");
+			final String productId = (String) arguments.get("productId");
+			final int quantity = (int) arguments.get("quantity");
+			final String source = (String) arguments.get("source");
+			String payload = String.format("{\"source\":\"%s\"}", source);
+			// Creating the Revenue instance.
+			// Creating the Revenue.Receipt instance.
+			// It is used for checking purchases in Google Play.
+			Revenue.Receipt revenueReceipt = Revenue.Receipt.newBuilder()
+			                                                .withData(originalJSON)
+			                                                .withSignature(signature)
+			                                                .build();
+			// Creating the Revenue instance.
+			Revenue revenue = Revenue.newBuilderWithMicros(Long.valueOf(price),
+			                                               Currency.getInstance(currency))
+			                         .withProductID(productId)
+			                         .withQuantity(quantity)
+			                         .withReceipt(revenueReceipt)
+			                         .withPayload(payload)
+			                         .build();
+			// Sending the Revenue instance.
+			YandexMetrica.reportRevenue(revenue);
+		} catch(Exception e) {
+			Log.e(TAG, e.getMessage(), e);
+			result.error("Error report revenue", e.getMessage(), null);
+		}
+		result.success(null);
+	}
 }
