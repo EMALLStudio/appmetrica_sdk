@@ -1,3 +1,7 @@
+## 0.0.4+2
+
+* Upgrade AppMetrica SDK for Android (3.8.0).
+
 ## 0.0.4+1
 
 * Upgrade AppMetrica SDK for iOS (3.8.2). Fixed an issue #2 with "helper" command line tool in dynamic frameworks.
