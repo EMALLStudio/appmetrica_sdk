@@ -40,6 +40,10 @@
       [self handleSetUserProfileID:call result:result];
   } else if ([@"sendEventsBuffer" isEqualToString:call.method]) {
       [self handleSendEventsBuffer:call result:result];
+  } else if ([@"reportRevenueWithoutValidation" isEqualToString:call.method]) {
+      [self handleReportRevenueWithoutValidation:call result:result];
+  } else if ([@"reportRevenueWithValidation" isEqualToString:call.method]) {
+      [self handleReportRevenueWithValidation:call result:result];
   } else {
       result(FlutterMethodNotImplemented);
   }
@@ -226,6 +230,48 @@
 - (void)handleSendEventsBuffer:(FlutterMethodCall*)call result:(FlutterResult)result {
     [YMMYandexMetrica sendEventsBuffer];
 
+    result(nil);
+}
+
+- (void)handleReportRevenueWithoutValidation:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* priceString = call.arguments[@"price"];
+    NSDecimalNumber *price = [NSDecimalNumber decimalNumberWithString:priceString];
+    NSString* currency = call.arguments[@"currency"];
+    NSString* productId = call.arguments[@"productId"];
+    NSInteger quantity = [call.arguments[@"quantity"] integerValue];
+    NSString* orderId = call.arguments[@"orderId"];
+    NSString* source = call.arguments[@"source"];
+    YMMMutableRevenueInfo *revenueInfo = [[YMMMutableRevenueInfo alloc] initWithPriceDecimal:price currency:currency];
+    revenueInfo.productID = productId;
+    revenueInfo.quantity = quantity;
+    // To group purchases, set the OrderID parameter in the payload property.
+    revenueInfo.payload = @{ @"OrderID": orderId, @"source": source };
+    // Sending the Revenue instance.
+    [YMMYandexMetrica reportRevenue:[revenueInfo copy] onFailure:^(NSError *error) {
+        NSLog(@"Revenue error: %@", error);
+    }];
+    result(nil);
+}
+
+- (void)handleReportRevenueWithValidation:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* transactionId = call.arguments[@"transactionId"];
+    NSString* priceString = call.arguments[@"price"];
+    NSDecimalNumber *price = [NSDecimalNumber decimalNumberWithString:priceString];
+    NSString* currency = call.arguments[@"currency"];
+    NSString* productId = call.arguments[@"productId"];
+    NSInteger quantity = [call.arguments[@"quantity"] integerValue];
+    NSString* source = call.arguments[@"source"];
+    YMMMutableRevenueInfo *revenueInfo = [[YMMMutableRevenueInfo alloc] initWithPriceDecimal:price currency:currency];
+    revenueInfo.productID = productId;
+    revenueInfo.quantity = quantity;
+    revenueInfo.payload = @{ @"source": source };
+    // Set purchase information for validation.
+    revenueInfo.transactionID = transactionId;
+    revenueInfo.receiptData = [NSData dataWithContentsOfURL:[[NSBundle mainBundle] appStoreReceiptURL]];
+    // Sending the Revenue instance.
+    [YMMYandexMetrica reportRevenue:[revenueInfo copy] onFailure:^(NSError *error) {
+        NSLog(@"Revenue error: %@", error);
+    }];
     result(nil);
 }
 
