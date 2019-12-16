@@ -1,3 +1,7 @@
+## 0.0.4+4
+
+* Plugin `README.md` polishing.
+
 ## 0.0.4+3
 
 * Remove the deprecated `author:` field from pubspec.yaml.
