@@ -17,8 +17,7 @@ A Flutter plugin for [Yandex AppMetrica SDK][SITE].
 - [ ] Deeplinks
 
 ## Usage
-To use this plugin, add `appmetrica_sdk` as a [dependency in your pubspec.yaml file](https://flutter.dev/platform-plugins/).
-
+To use this plugin, add `appmetrica_sdk` as a [dependency in your pubspec.yaml file](https://flutter.dev/platform-plugins/). See demonstration how to use the appmetrica_sdk plugin in example section.
 
 ## Documentation
 Common documentation available on [AppMetrica official site][DOCUMENTATION].
