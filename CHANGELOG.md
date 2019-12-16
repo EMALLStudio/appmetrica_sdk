@@ -1,3 +1,9 @@
+## 0.0.4+3
+
+* Remove the deprecated `author:` field from pubspec.yaml.
+* Fix example app by adding a call to `ensureInitialized`.
+* Update example code. Plugin documentation polishing. `CONTRIBUTING.md` added.
+
 ## 0.0.4+2
 
 * Upgrade AppMetrica SDK for Android (3.8.0).
