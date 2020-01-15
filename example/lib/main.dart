@@ -123,6 +123,18 @@ class _MyAppState extends State<MyApp> {
                             notificationsEnabled: true);
                       },
                     ),
+                    RaisedButton(
+                      child: const Text(
+                          'Send referral URL for this installation'),
+                      onPressed: () {
+                        /// Sets referral URL for this installation. This might
+                        /// be required to track some specific traffic
+                        /// sources like Facebook.
+                        AppmetricaSdk().reportReferralUrl(
+                          referral: 'fb123456789://example.com/test',
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

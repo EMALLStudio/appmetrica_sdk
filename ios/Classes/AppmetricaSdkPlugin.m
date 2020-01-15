@@ -40,6 +40,8 @@
       [self handleSetUserProfileID:call result:result];
   } else if ([@"sendEventsBuffer" isEqualToString:call.method]) {
       [self handleSendEventsBuffer:call result:result];
+  } else if ([@"reportReferralUrl" isEqualToString:call.method]) {
+      [self handleReportReferralUrl:call result:result];
   } else {
       result(FlutterMethodNotImplemented);
   }
@@ -225,6 +227,15 @@
 
 - (void)handleSendEventsBuffer:(FlutterMethodCall*)call result:(FlutterResult)result {
     [YMMYandexMetrica sendEventsBuffer];
+
+    result(nil);
+}
+
+- (void)handleReportReferralUrl:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* referral = call.arguments[@"referral"];
+    NSURL *url = [[NSURL alloc] initWithString:referral];
+    
+    [YMMYandexMetrica reportReferralUrl:url];
 
     result(nil);
 }

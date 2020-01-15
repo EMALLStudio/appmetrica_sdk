@@ -83,6 +83,9 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             case "sendEventsBuffer":
                 handleSendEventsBuffer(call, result);
                 break;
+            case "reportReferralUrl":
+                handleReportReferralUrl(call, result);
+                break;
             default:
               result.notImplemented();
               break;
@@ -305,6 +308,20 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             Log.e(TAG, e.getMessage(), e);
             result.error("Error sending stored events from the buffer", e.getMessage(), null);
 
+        }
+
+        result.success(null);
+    }
+
+    private void handleReportReferralUrl(MethodCall call, Result result) {
+        try {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> arguments = (Map<String, Object>) call.arguments;
+            final String referral = (String) arguments.get("referral");
+            YandexMetrica.reportReferralUrl(referral);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            result.error("Error sets the ID of the user profile", e.getMessage(), null);
         }
 
         result.success(null);

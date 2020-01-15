@@ -212,4 +212,18 @@ class AppmetricaSdk {
     }
     return await _channel.invokeMethod<String>('sendEventsBuffer');
   }
+
+  // Sets referral URL for this installation. This might be required to track
+  // some specific traffic sources like Facebook.
+  // Referral URL reporting is no longer available
+  // but many agencies use this report
+  Future<void> reportReferralUrl({@required String referral}) async {
+    if (_apiKey == null) {
+      throw 'The API key is not set';
+    }
+    return await _channel
+        .invokeMethod<String>('reportReferralUrl', <String, dynamic>{
+      'referral': referral,
+    });
+  }
 }
