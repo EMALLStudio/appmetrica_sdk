@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Add `reportReferralUrl` function (#5) via kirill09. Sets referral URL for app installs.
+
 ## 0.0.4+4
 
 * Plugin `README.md` polishing.
