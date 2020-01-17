@@ -1,6 +1,7 @@
 ## 0.0.5
 
 * Add `reportReferralUrl` function (#5) via kirill09. Sets referral URL for app installs.
+* Upgrade AppMetrica SDK for iOS (3.9.2).
 
 ## 0.0.4+4
 
