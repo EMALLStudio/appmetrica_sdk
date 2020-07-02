@@ -36,4 +36,7 @@ android {
 dependencies {
     // AppMetrica SDK.
     implementation 'com.yandex.android:mobmetricalib:3.10.0'
+
+    // Optionally. Play Install Referrer library for track installations.
+    implementation 'com.android.installreferrer:installreferrer:1.0'
 }
