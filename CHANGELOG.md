@@ -1,3 +1,9 @@
+## 0.0.5+2
+
+* Upgrade AppMetrica SDK (Android 3.14.3/iOS 3.11.1).
+* Upgrade dependencies.
+* Update plugin documentation.
+
 ## 0.0.5+1
 
 * Upgrade AppMetrica SDK (Android 3.10.0/iOS 3.9.4).

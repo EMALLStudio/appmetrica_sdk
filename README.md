@@ -19,6 +19,16 @@ A Flutter plugin for [Yandex AppMetrica SDK][SITE].
 ## Usage
 To use this plugin, add `appmetrica_sdk` as a [dependency in your pubspec.yaml file](https://flutter.dev/platform-plugins/). See demonstration how to use the appmetrica_sdk plugin in example section.
 
+## Attribute app downloads that originate from Apple Search Ads campaigns (iOS only)
+Some Appmetrica SDK features, such as retrieve attribution data from user interaction with ads originating from Apple Search Ads campaigns require the [iAd Framework](https://developer.apple.com/documentation/iad) to be enabled. Without this framework Appmetrica SDK cannot collect this information.
+
+To enable the iAd framework:
+- In your Xcode project, select your project's target.
+- Select the General tab for your target.
+- Expand the Linked Frameworks and Libraries section.
+- Click + to add a framework.
+- Select iAd.framework.
+
 ## Documentation
 Common documentation available on [AppMetrica official site][DOCUMENTATION].
 
