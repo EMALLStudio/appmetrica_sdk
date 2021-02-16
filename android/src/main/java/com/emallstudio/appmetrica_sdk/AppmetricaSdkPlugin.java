@@ -4,6 +4,8 @@
 
 package com.emallstudio.appmetrica_sdk;
 
+import androidx.annotation.NonNull;
+
 import android.util.Log;
 import android.app.Activity;
 import android.app.Application;
@@ -13,6 +15,8 @@ import android.content.Intent;
 import android.util.SparseArray;
 import java.util.Map;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -28,24 +32,40 @@ import com.yandex.metrica.profile.UserProfile;
 import com.yandex.metrica.profile.UserProfileUpdate;
 
 /** AppmetricaSdkPlugin */
-public class AppmetricaSdkPlugin implements MethodCallHandler {
+public class AppmetricaSdkPlugin implements MethodCallHandler, FlutterPlugin {
     private static final String TAG = "AppmetricaSdkPlugin";
-    private Context mContext;
-    private Application mApplication;
+    private MethodChannel methodChannel;
+    private Context context;
+    private Application application;
 
-    /** Plugin registration. */
+    /** Plugin registration for v1 embedder. */
     public static void registerWith(Registrar registrar) {
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "emallstudio.com/appmetrica_sdk");
-        channel.setMethodCallHandler(new AppmetricaSdkPlugin(registrar));
-    }
-
-    private AppmetricaSdkPlugin(Registrar registrar) {
-        this.mContext = registrar.activity().getApplicationContext();
-        this.mApplication = registrar.activity().getApplication();
+        final AppmetricaSdkPlugin instance = new AppmetricaSdkPlugin();
+        instance.onAttachedToEngine(registrar.context(), registrar.messenger());
     }
 
     @Override
-    public void onMethodCall(MethodCall call, Result result) {
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+      onAttachedToEngine(flutterPluginBinding.getApplicationContext(), flutterPluginBinding.getBinaryMessenger());
+    }
+
+    private void onAttachedToEngine(Context applicationContext, BinaryMessenger binaryMessenger) {
+      application = (Application) applicationContext;
+      context = applicationContext;
+      methodChannel = new MethodChannel(binaryMessenger, "emallstudio.com/appmetrica_sdk");
+      methodChannel.setMethodCallHandler(this);
+    }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+        methodChannel.setMethodCallHandler(null);
+        methodChannel = null;
+        context = null;
+        application = null;
+    }
+
+    @Override
+    public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         switch (call.method) {
             case "activate":
                 handleActivate(call, result);
@@ -113,9 +133,9 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
                     .withMaxReportsInDatabaseCount(maxReportsInDatabaseCount)
                     .build();
             // Initializing the AppMetrica SDK.
-            YandexMetrica.activate(mContext, config);
+            YandexMetrica.activate(context, config);
             // Automatic tracking of user activity.
-            YandexMetrica.enableActivityAutoTracking(mApplication);
+            YandexMetrica.enableActivityAutoTracking(application);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             result.error("Error performing activation", e.getMessage(), null);
@@ -269,7 +289,7 @@ public class AppmetricaSdkPlugin implements MethodCallHandler {
             @SuppressWarnings("unchecked")
             Map<String, Object> arguments = (Map<String, Object>) call.arguments;
             final boolean statisticsSending = (boolean) arguments.get("statisticsSending");
-            YandexMetrica.setStatisticsSending(mContext, statisticsSending);
+            YandexMetrica.setStatisticsSending(context, statisticsSending);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             result.error("Error enable sending statistics", e.getMessage(), null);
