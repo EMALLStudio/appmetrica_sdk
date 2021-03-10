@@ -113,7 +113,7 @@ class AppmetricaSdk {
   }
 
   /// Sends predefined [userName] profile attribute to the AppMetrica server.
-  Future<void> reportUserProfileUserName({required String userName}) async {
+  Future<void> reportUserProfileUserName({String? userName}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
