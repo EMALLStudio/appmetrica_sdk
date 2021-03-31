@@ -1,3 +1,7 @@
+## 0.0.7
+
+* Added null-safety (#10) via Bhagat8533. 
+
 ## 0.0.6
 
 * Upgrade AppMetrica SDK (Android 3.18.0/iOS 3.14.0).
