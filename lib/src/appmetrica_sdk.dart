@@ -62,7 +62,7 @@ class AppmetricaSdk {
 
   /// Sends custom string user profile attribute with the given [key] and [value] to the AppMetrica server.
   Future<void> reportUserProfileCustomString(
-      {required String key, required String value}) async {
+      {required String key, String? value}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
@@ -75,7 +75,7 @@ class AppmetricaSdk {
 
   /// Sends custom number user profile attribute with the given [key] and [value] to the AppMetrica server.
   Future<void> reportUserProfileCustomNumber(
-      {required String key, required double value}) async {
+      {required String key, double? value}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
@@ -88,7 +88,7 @@ class AppmetricaSdk {
 
   /// Sends custom boolean user profile attribute with the given [key] and [value] to the AppMetrica server.
   Future<void> reportUserProfileCustomBoolean(
-      {required String key, required bool value}) async {
+      {required String key, bool? value}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
@@ -125,7 +125,7 @@ class AppmetricaSdk {
 
   /// Sends predefined [notificationsEnabled] profile attribute to the AppMetrica server.
   Future<void> reportUserProfileNotificationsEnabled(
-      {required bool notificationsEnabled}) async {
+      {bool? notificationsEnabled}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
