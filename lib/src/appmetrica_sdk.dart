@@ -6,16 +6,16 @@ part of appmetrica_sdk;
 
 /// Appmetrica SDK singleton.
 class AppmetricaSdk {
-  String _apiKey;
+  String? _apiKey;
   final MethodChannel _channel;
-  static AppmetricaSdk _instance;
+  static AppmetricaSdk? _instance;
 
   factory AppmetricaSdk() {
     if (_instance == null) {
       _instance = AppmetricaSdk.private(
           const MethodChannel('emallstudio.com/appmetrica_sdk'));
     }
-    return _instance;
+    return _instance!;
   }
   AppmetricaSdk.private(this._channel);
 
@@ -29,30 +29,12 @@ class AppmetricaSdk {
   /// The [crashReporting] indicating that sending app crashes is enabled. By default, sending is enabled.
   /// Android only. The [maxReportsInDatabaseCount] is maximum number of events that can be stored in the database on the phone before being sent to AppMetrica. If there are more events, old records will begin to be deleted. The default value is 1000 (allowed values from 100 to 10000).
   Future<void> activate(
-      {@required String apiKey,
+      {required String apiKey,
       int sessionTimeout = 10,
       bool locationTracking = true,
       bool statisticsSending = true,
       bool crashReporting = true,
       int maxReportsInDatabaseCount = 1000}) async {
-    if (apiKey == null) {
-      throw ArgumentError.notNull('apiKey');
-    }
-    if (sessionTimeout == null) {
-      throw ArgumentError.notNull('sessionTimeout');
-    }
-    if (locationTracking == null) {
-      throw ArgumentError.notNull('locationTracking');
-    }
-    if (statisticsSending == null) {
-      throw ArgumentError.notNull('statisticsSending');
-    }
-    if (crashReporting == null) {
-      throw ArgumentError.notNull('crashReporting');
-    }
-    if (crashReporting == null) {
-      throw ArgumentError.notNull('maxReportsInDatabaseCount');
-    }
     await _channel.invokeMethod<void>('activate', <String, dynamic>{
       'apiKey': apiKey,
       'sessionTimeout': sessionTimeout,
@@ -68,7 +50,7 @@ class AppmetricaSdk {
 
   /// Sends an event with [name] and message as a set of [attributes] to the AppMetrica server.
   Future<void> reportEvent(
-      {@required String name, Map<String, dynamic> attributes}) async {
+      {required String name, Map<String, dynamic>? attributes}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
@@ -80,12 +62,9 @@ class AppmetricaSdk {
 
   /// Sends custom string user profile attribute with the given [key] and [value] to the AppMetrica server.
   Future<void> reportUserProfileCustomString(
-      {@required String key, @required String value}) async {
+      {required String key, String? value}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
-    }
-    if (key == null) {
-      throw ArgumentError.notNull('key');
     }
     await _channel
         .invokeMethod<void>('reportUserProfileCustomString', <String, dynamic>{
@@ -96,12 +75,9 @@ class AppmetricaSdk {
 
   /// Sends custom number user profile attribute with the given [key] and [value] to the AppMetrica server.
   Future<void> reportUserProfileCustomNumber(
-      {@required String key, @required double value}) async {
+      {required String key, double? value}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
-    }
-    if (key == null) {
-      throw ArgumentError.notNull('key');
     }
     await _channel
         .invokeMethod<void>('reportUserProfileCustomNumber', <String, dynamic>{
@@ -112,12 +88,9 @@ class AppmetricaSdk {
 
   /// Sends custom boolean user profile attribute with the given [key] and [value] to the AppMetrica server.
   Future<void> reportUserProfileCustomBoolean(
-      {@required String key, @required bool value}) async {
+      {required String key, bool? value}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
-    }
-    if (key == null) {
-      throw ArgumentError.notNull('key');
     }
     await _channel
         .invokeMethod<void>('reportUserProfileCustomBoolean', <String, dynamic>{
@@ -128,15 +101,9 @@ class AppmetricaSdk {
 
   /// Sends custom counter user profile attribute with the given [key] and [value] to the AppMetrica server.
   Future<void> reportUserProfileCustomCounter(
-      {@required String key, @required double delta}) async {
+      {required String key, required double delta}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
-    }
-    if (key == null) {
-      throw ArgumentError.notNull('key');
-    }
-    if (delta == null) {
-      throw ArgumentError.notNull('delta');
     }
     await _channel
         .invokeMethod<void>('reportUserProfileCustomCounter', <String, dynamic>{
@@ -146,7 +113,7 @@ class AppmetricaSdk {
   }
 
   /// Sends predefined [userName] profile attribute to the AppMetrica server.
-  Future<void> reportUserProfileUserName({@required String userName}) async {
+  Future<void> reportUserProfileUserName({String? userName}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
@@ -158,7 +125,7 @@ class AppmetricaSdk {
 
   /// Sends predefined [notificationsEnabled] profile attribute to the AppMetrica server.
   Future<void> reportUserProfileNotificationsEnabled(
-      {@required bool notificationsEnabled}) async {
+      {bool? notificationsEnabled}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
@@ -169,12 +136,9 @@ class AppmetricaSdk {
   }
 
   /// Disable and enable sending statistics to the AppMetrica server.
-  Future<void> setStatisticsSending({@required bool statisticsSending}) async {
+  Future<void> setStatisticsSending({required bool statisticsSending}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
-    }
-    if (statisticsSending == null) {
-      throw ArgumentError.notNull('statisticsSending');
     }
 
     await _channel.invokeMethod<void>('setStatisticsSending', <String, dynamic>{
@@ -183,7 +147,7 @@ class AppmetricaSdk {
   }
 
   /// Returns the current version of the AppMetrica library.
-  Future<String> getLibraryVersion() async {
+  Future<String?> getLibraryVersion() async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
@@ -192,7 +156,7 @@ class AppmetricaSdk {
 
   /// Sets the ID of the user profile.
   /// Required for predefined profile attributes like Name or Notifications enabled.
-  Future<void> setUserProfileID({@required String userProfileID}) async {
+  Future<void> setUserProfileID({required String userProfileID}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
@@ -210,20 +174,21 @@ class AppmetricaSdk {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
-    return await _channel.invokeMethod<String>('sendEventsBuffer');
+    await _channel.invokeMethod<String>('sendEventsBuffer');
+    return;
   }
 
   // Sets referral URL for this installation. This might be required to track
   // some specific traffic sources like Facebook.
   // Referral URL reporting is no longer available
   // but many agencies use this report
-  Future<void> reportReferralUrl({@required String referral}) async {
+  Future<void> reportReferralUrl({required String referral}) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
-    return await _channel
-        .invokeMethod<String>('reportReferralUrl', <String, dynamic>{
+    await _channel.invokeMethod<String>('reportReferralUrl', <String, dynamic>{
       'referral': referral,
     });
+    return;
   }
 }
