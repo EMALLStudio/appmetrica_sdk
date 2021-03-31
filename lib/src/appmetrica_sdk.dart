@@ -186,8 +186,7 @@ class AppmetricaSdk {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
-     await _channel
-        .invokeMethod<String>('reportReferralUrl', <String, dynamic>{
+    await _channel.invokeMethod<String>('reportReferralUrl', <String, dynamic>{
       'referral': referral,
     });
     return;
