@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:appmetrica_sdk/appmetrica_sdk.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   /// Initializing the AppMetrica SDK.
   await AppmetricaSdk()
       .activate(apiKey: 'db2206ed-c61a-43aa-b95c-6912f60bd25e');
@@ -19,7 +21,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _libraryVersion = 'Unknown';
+  String? _libraryVersion = 'Unknown';
 
   @override
   void initState() {
@@ -29,7 +31,7 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initLibrarayVersionState() async {
-    String libraryVersion;
+    String? libraryVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       libraryVersion = await AppmetricaSdk().getLibraryVersion();
@@ -119,6 +121,18 @@ class _MyAppState extends State<MyApp> {
                         /// Sending profile predefined NotificationsEnabled attribute.
                         AppmetricaSdk().reportUserProfileNotificationsEnabled(
                             notificationsEnabled: true);
+                      },
+                    ),
+                    RaisedButton(
+                      child:
+                          const Text('Send referral URL for this installation'),
+                      onPressed: () {
+                        /// Sets referral URL for this installation. This might
+                        /// be required to track some specific traffic
+                        /// sources like Facebook.
+                        AppmetricaSdk().reportReferralUrl(
+                          referral: 'fb123456789://example.com/test',
+                        );
                       },
                     ),
                   ],

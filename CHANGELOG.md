@@ -1,3 +1,37 @@
+## 0.0.7
+
+* Added null-safety (#10) via Bhagat8533. 
+
+## 0.0.6
+
+* Upgrade AppMetrica SDK (Android 3.18.0/iOS 3.14.0).
+* Upgrade Android plugin.
+
+## 0.0.5+2
+
+* Upgrade AppMetrica SDK (Android 3.14.3/iOS 3.11.1).
+* Upgrade dependencies.
+* Update plugin documentation.
+
+## 0.0.5+1
+
+* Upgrade AppMetrica SDK (Android 3.10.0/iOS 3.9.4).
+
+## 0.0.5
+
+* Add `reportReferralUrl` function (#5) via kirill09. Sets referral URL for app installs.
+* Upgrade AppMetrica SDK for iOS (3.9.2).
+
+## 0.0.4+4
+
+* Plugin `README.md` polishing.
+
+## 0.0.4+3
+
+* Remove the deprecated `author:` field from pubspec.yaml.
+* Fix example app by adding a call to `ensureInitialized`.
+* Update example code. Plugin documentation polishing. `CONTRIBUTING.md` added.
+
 ## 0.0.4+2
 
 * Upgrade AppMetrica SDK for Android (3.8.0).

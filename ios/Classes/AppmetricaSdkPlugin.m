@@ -44,6 +44,8 @@
       [self handleReportRevenueWithoutValidation:call result:result];
   } else if ([@"reportRevenueWithValidation" isEqualToString:call.method]) {
       [self handleReportRevenueWithValidation:call result:result];
+  } else if ([@"reportReferralUrl" isEqualToString:call.method]) {
+      [self handleReportReferralUrl:call result:result];
   } else {
       result(FlutterMethodNotImplemented);
   }
@@ -272,6 +274,12 @@
     [YMMYandexMetrica reportRevenue:[revenueInfo copy] onFailure:^(NSError *error) {
         NSLog(@"Revenue error: %@", error);
     }];
+- (void)handleReportReferralUrl:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* referral = call.arguments[@"referral"];
+    NSURL *url = [[NSURL alloc] initWithString:referral];
+    
+    [YMMYandexMetrica reportReferralUrl:url];
+
     result(nil);
 }
 
