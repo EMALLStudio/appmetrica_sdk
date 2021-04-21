@@ -1,3 +1,7 @@
+## 0.0.8
+
+* Added Revenue Reports (#3) via smartvdd. 
+
 ## 0.0.7
 
 * Added null-safety (#10) via Bhagat8533. 

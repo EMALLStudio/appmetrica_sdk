@@ -9,8 +9,8 @@ A Flutter plugin for [Yandex AppMetrica SDK][SITE].
 ### Implemented
 - [Events](https://appmetrica.yandex.com/docs/mobile-events/concepts/events.html)
 - [Profiles](https://appmetrica.yandex.com/docs/mobile-profile/concepts/profile.html)
+- [Revenue](https://appmetrica.yandex.com/docs/revenue/concepts/about.html)
 ### Not implemented yet
-- [Revenue](https://appmetrica.yandex.com/docs/revenue/concepts/about.html). Coming soon
 - [Crashes](https://appmetrica.yandex.com/docs/crashes/about.html)
 - [Push notifications](https://appmetrica.yandex.com/docs/push/concepts/about.html)
 - Multiple reporters support (with different API keys)

@@ -40,12 +40,12 @@
       [self handleSetUserProfileID:call result:result];
   } else if ([@"sendEventsBuffer" isEqualToString:call.method]) {
       [self handleSendEventsBuffer:call result:result];
+  } else if ([@"reportReferralUrl" isEqualToString:call.method]) {
+      [self handleReportReferralUrl:call result:result];
   } else if ([@"reportRevenueWithoutValidation" isEqualToString:call.method]) {
       [self handleReportRevenueWithoutValidation:call result:result];
   } else if ([@"reportRevenueWithValidation" isEqualToString:call.method]) {
       [self handleReportRevenueWithValidation:call result:result];
-  } else if ([@"reportReferralUrl" isEqualToString:call.method]) {
-      [self handleReportReferralUrl:call result:result];
   } else {
       result(FlutterMethodNotImplemented);
   }

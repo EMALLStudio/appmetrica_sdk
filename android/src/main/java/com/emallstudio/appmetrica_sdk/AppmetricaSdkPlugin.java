@@ -106,16 +106,15 @@ public class AppmetricaSdkPlugin implements MethodCallHandler, FlutterPlugin {
             case "sendEventsBuffer":
                 handleSendEventsBuffer(call, result);
                 break;
+            case "reportReferralUrl":
+                handleReportReferralUrl(call, result);
+                break;
 	        case "reportRevenueWithoutValidation":
 		        handleReportRevenueWithoutValidation(call, result);
 		        break;
 	        case "reportRevenueWithValidation":
 		        handleReportRevenueWithValidation(call, result);
 		        break;
-	        default:
-            case "reportReferralUrl":
-                handleReportReferralUrl(call, result);
-                break;
             default:
               result.notImplemented();
               break;
@@ -342,6 +341,20 @@ public class AppmetricaSdkPlugin implements MethodCallHandler, FlutterPlugin {
 
         result.success(null);
     }
+
+    private void handleReportReferralUrl(MethodCall call, Result result) {
+        try {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> arguments = (Map<String, Object>) call.arguments;
+            final String referral = (String) arguments.get("referral");
+            YandexMetrica.reportReferralUrl(referral);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            result.error("Error sets the ID of the user profile", e.getMessage(), null);
+        }
+
+        result.success(null);
+    }    
 	
 	private void handleReportRevenueWithoutValidation(MethodCall call, Result result) {
 		try {
@@ -384,8 +397,9 @@ public class AppmetricaSdkPlugin implements MethodCallHandler, FlutterPlugin {
 			final String productId = (String) arguments.get("productId");
 			final int quantity = (int) arguments.get("quantity");
 			final String source = (String) arguments.get("source");
-			String payload = String.format("{\"source\":\"%s\"}", source);
-			// Creating the Revenue instance.
+			String payload = String.format("{\"OrderID\":\"%s\", \"source\":\"%s\"}",
+			                               orderId,
+			                               source);
 			// Creating the Revenue.Receipt instance.
 			// It is used for checking purchases in Google Play.
 			Revenue.Receipt revenueReceipt = Revenue.Receipt.newBuilder()
@@ -409,17 +423,4 @@ public class AppmetricaSdkPlugin implements MethodCallHandler, FlutterPlugin {
 		result.success(null);
 	}
 
-    private void handleReportReferralUrl(MethodCall call, Result result) {
-        try {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> arguments = (Map<String, Object>) call.arguments;
-            final String referral = (String) arguments.get("referral");
-            YandexMetrica.reportReferralUrl(referral);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            result.error("Error sets the ID of the user profile", e.getMessage(), null);
-        }
-
-        result.success(null);
-    }
 }

@@ -5,6 +5,7 @@
 library appmetrica_sdk;
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 

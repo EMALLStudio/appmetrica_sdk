@@ -193,77 +193,64 @@ class AppmetricaSdk {
     return;
   }
 
+  // Sends revenue from in-app purchases without validation
+  //
+  // The [priceMicros] is the price that is calculated using the following formula: priceMicros = price × 10^6. It can be negative, e.g. for refunds.
+  // The [currency] is the currency of the purchase.
+  // The [productId] is an ID of the product purchased. The value can contain up to 200 characters.
+  // The [quantity] is a quantity of products purchased.
+  // The [payload] is an additional information to be passed about the purchase. The maximum size of the value is 30 KB. To group purchases, pass the OrderID parameter to the field. For example: {OrderID: 'Purchase ID', source: 'Google Play'}
   Future<void> reportRevenueWithoutValidation(
-      {@required String price,
-      @required String currency,
-      @required String productId,
-      @required int quantity,
-      @required String source,
-      @required String orderId}) async {
-    _checkRevenueRequiredParams(price, currency, productId, quantity, source);
-    if (orderId == null) {
-      throw ArgumentError.notNull('orderId');
+      {required int priceMicros,
+      required String currency,
+      required String productId,
+      required int quantity,
+      Map<String, String>? payload}) async {
+    if (_apiKey == null) {
+      throw 'The API key is not set';
     }
-    await _channel.invokeMethod<void>('reportRevenueWithoutValidation', <String, dynamic>{
-      'price': price,
+    await _channel
+        .invokeMethod<void>('reportRevenueWithoutValidation', <String, dynamic>{
+      'priceMicros': priceMicros,
       'currency': currency,
       'productId': productId,
       'quantity': quantity,
-      'source': source,
-      'orderId': orderId
+      'payload': payload == null ? null : json.encode(payload)
     });
   }
 
+  // Sends revenue from in-app purchases with validation
+  //
+  // The [priceMicros] is the price that is calculated using the following formula: priceMicros = price × 10^6. It can be negative, e.g. for refunds.
+  // The [currency] is the currency of the purchase.
+  // The [productId] is an ID of the product purchased. The value can contain up to 200 characters.
+  // The [quantity] is a quantity of products purchased.
+  // The [payload] is an additional information to be passed about the purchase. The maximum size of the value is 30 KB. To group purchases, pass the OrderID parameter to the field. For example: {OrderID: 'Purchase ID', source: 'Google Play'}
   Future<void> reportRevenueWithValidation(
-      {@required String price,
-      @required String currency,
-      @required String productId,
-      @required int quantity,
-      @required String source,
+      {required int priceMicros,
+      required String currency,
+      required String productId,
+      required int quantity,
+      Map<String, String>? payload,
       //Android only
-      String originalJSON,
+      String? originalJSON,
       //Android only
-      String signature,
+      String? signature,
       //iOS only
-      String transactionId}) async {
-    _checkRevenueRequiredParams(price, currency, productId, quantity, source);
-    await _channel.invokeMethod<void>('reportRevenueWithValidation', <String, dynamic>{
-      'price': price,
+      String? transactionId}) async {
+    if (_apiKey == null) {
+      throw 'The API key is not set';
+    }
+    await _channel
+        .invokeMethod<void>('reportRevenueWithValidation', <String, dynamic>{
+      'price': priceMicros,
       'currency': currency,
       'productId': productId,
       'quantity': quantity,
-      'source': source,
+      'payload': payload == null ? null : json.encode(payload),
       'originalJSON': originalJSON,
       'signature': signature,
       'transactionId': transactionId
     });
   }
-
-  void _checkRevenueRequiredParams(
-    String price,
-    String currency,
-    String productId,
-    int quantity,
-    String source,
-  ) {
-    if (_apiKey == null) {
-      throw 'The API key is not set';
-    }
-    if (price == null) {
-      throw ArgumentError.notNull('price');
-    }
-    if (currency == null) {
-      throw ArgumentError.notNull('currency');
-    }
-    if (productId == null) {
-      throw ArgumentError.notNull('productId');
-    }
-    if (quantity == null) {
-      throw ArgumentError.notNull('quantity');
-    }
-    if (source == null) {
-      throw ArgumentError.notNull('source');
-    }
-  }
-
 }
