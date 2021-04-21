@@ -217,6 +217,7 @@ class AppmetricaSdk {
       'quantity': quantity,
       'payload': payload == null ? null : json.encode(payload)
     });
+    return;
   }
 
   // Sends revenue from in-app purchases with validation
@@ -252,5 +253,6 @@ class AppmetricaSdk {
       'signature': signature,
       'transactionId': transactionId
     });
+    return;
   }
 }

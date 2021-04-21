@@ -235,19 +235,28 @@
     result(nil);
 }
 
+- (void)handleReportReferralUrl:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* referral = call.arguments[@"referral"];
+    NSURL *url = [[NSURL alloc] initWithString:referral];
+    
+    [YMMYandexMetrica reportReferralUrl:url];
+
+    result(nil);
+}
+
 - (void)handleReportRevenueWithoutValidation:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSString* priceString = call.arguments[@"price"];
-    NSDecimalNumber *price = [NSDecimalNumber decimalNumberWithString:priceString];
+    NSDecimalNumber *priceMicros = [[[NSDecimalNumber alloc] initWithInt:[call.arguments[@"priceMicros"]] autorelease];
     NSString* currency = call.arguments[@"currency"];
     NSString* productId = call.arguments[@"productId"];
     NSInteger quantity = [call.arguments[@"quantity"] integerValue];
     NSString* orderId = call.arguments[@"orderId"];
-    NSString* source = call.arguments[@"source"];
-    YMMMutableRevenueInfo *revenueInfo = [[YMMMutableRevenueInfo alloc] initWithPriceDecimal:price currency:currency];
+    NSString* payload = call.arguments[@"payload"];
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:payload options:0];
+    YMMMutableRevenueInfo *revenueInfo = [[YMMMutableRevenueInfo alloc] initWithPriceDecimal:priceMicros currency:currency];
     revenueInfo.productID = productId;
     revenueInfo.quantity = quantity;
     // To group purchases, set the OrderID parameter in the payload property.
-    revenueInfo.payload = @{ @"OrderID": orderId, @"source": source };
+    revenueInfo.payload = jsonDict;
     // Sending the Revenue instance.
     [YMMYandexMetrica reportRevenue:[revenueInfo copy] onFailure:^(NSError *error) {
         NSLog(@"Revenue error: %@", error);
@@ -274,13 +283,5 @@
     [YMMYandexMetrica reportRevenue:[revenueInfo copy] onFailure:^(NSError *error) {
         NSLog(@"Revenue error: %@", error);
     }];
-- (void)handleReportReferralUrl:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSString* referral = call.arguments[@"referral"];
-    NSURL *url = [[NSURL alloc] initWithString:referral];
-    
-    [YMMYandexMetrica reportReferralUrl:url];
-
-    result(nil);
-}
 
 @end

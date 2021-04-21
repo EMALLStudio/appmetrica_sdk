@@ -360,17 +360,13 @@ public class AppmetricaSdkPlugin implements MethodCallHandler, FlutterPlugin {
 		try {
 			@SuppressWarnings("unchecked") Map<String, Object> arguments =
 					(Map<String, Object>) call.arguments;
-			final String price = (String) arguments.get("price");
+			final Long priceMicros = (Long) arguments.get("priceMicros");
 			final String currency = (String) arguments.get("currency");
 			final String productId = (String) arguments.get("productId");
 			final int quantity = (int) arguments.get("quantity");
-			final String orderId = (String) arguments.get("orderId");
-			final String source = (String) arguments.get("source");
-			String payload = String.format("{\"OrderID\":\"%s\", \"source\":\"%s\"}",
-			                               orderId,
-			                               source);
+            final String payload = (String) arguments.get("payload");
 			// Creating the Revenue instance.
-			Revenue revenue = Revenue.newBuilderWithMicros(Long.valueOf(price),
+			Revenue revenue = Revenue.newBuilderWithMicros(priceMicros,
 			                                               Currency.getInstance(currency))
 			                         .withProductID(productId)
 			                         .withQuantity(quantity)
@@ -390,16 +386,13 @@ public class AppmetricaSdkPlugin implements MethodCallHandler, FlutterPlugin {
 		try {
 			@SuppressWarnings("unchecked") Map<String, Object> arguments =
 					(Map<String, Object>) call.arguments;
-			final String originalJSON = (String) arguments.get("originalJSON");
-			final String signature = (String) arguments.get("signature");
-			final String price = (String) arguments.get("price");
+			final Long priceMicros = (Long) arguments.get("priceMicros");
 			final String currency = (String) arguments.get("currency");
 			final String productId = (String) arguments.get("productId");
 			final int quantity = (int) arguments.get("quantity");
-			final String source = (String) arguments.get("source");
-			String payload = String.format("{\"OrderID\":\"%s\", \"source\":\"%s\"}",
-			                               orderId,
-			                               source);
+            final String payload = (String) arguments.get("payload");
+			final String originalJSON = (String) arguments.get("originalJSON");
+			final String signature = (String) arguments.get("signature");
 			// Creating the Revenue.Receipt instance.
 			// It is used for checking purchases in Google Play.
 			Revenue.Receipt revenueReceipt = Revenue.Receipt.newBuilder()
@@ -407,7 +400,7 @@ public class AppmetricaSdkPlugin implements MethodCallHandler, FlutterPlugin {
 			                                                .withSignature(signature)
 			                                                .build();
 			// Creating the Revenue instance.
-			Revenue revenue = Revenue.newBuilderWithMicros(Long.valueOf(price),
+			Revenue revenue = Revenue.newBuilderWithMicros(priceMicros,
 			                                               Currency.getInstance(currency))
 			                         .withProductID(productId)
 			                         .withQuantity(quantity)
