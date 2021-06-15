@@ -34,5 +34,5 @@ android {
 
 dependencies {
     // AppMetrica SDK.
-    implementation 'com.yandex.android:mobmetricalib:3.18.0'
+    implementation 'com.yandex.android:mobmetricalib:3.21.0'
 }
