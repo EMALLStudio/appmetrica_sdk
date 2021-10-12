@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'YandexMobileMetrica/Dynamic', '3.16.0'
+  s.dependency 'YandexMobileMetrica/Dynamic', '3.17.0'
 
   s.ios.deployment_target = '8.0'
 end
