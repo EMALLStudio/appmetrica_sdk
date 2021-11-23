@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.emallstudio.appmetrica_sdk">
-    <uses-permission android:name="android.permission.INTERNET"/>
+    package="com.emallstudio.appmetrica_sdk">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

@@ -70,8 +70,7 @@
     configuration.locationTracking = locationTracking;
     configuration.statisticsSending = statisticsSending;
     configuration.crashReporting = crashReporting;
-    // maxReportsInDatabaseCount is not supported yet. Android only feature.
-    //configuration.maxReportsInDatabaseCount = maxReportsInDatabaseCount;
+    configuration.maxReportsInDatabaseCount = maxReportsInDatabaseCount;
     // Initializing the AppMetrica SDK.
     [YMMYandexMetrica activateWithConfiguration:configuration];
     result(nil);

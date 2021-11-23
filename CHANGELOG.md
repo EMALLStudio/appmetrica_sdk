@@ -1,10 +1,15 @@
+## 0.1.0
+
+* Upgrade AppMetrica SDK 4.0.0
+* Upgrade android plugin to kotlin
+
 ## 0.0.7+1
 
 * Upgrade AppMetrica SDK (Android 3.21.0/iOS 3.16.0).
 
 ## 0.0.7
 
-* Added null-safety (#10) via Bhagat8533. 
+* Added null-safety (#10) via Bhagat8533.
 
 ## 0.0.6
 
@@ -42,13 +47,15 @@
 
 ## 0.0.4+1
 
-* Upgrade AppMetrica SDK for iOS (3.8.2). Fixed an issue #2 with "helper" command line tool in dynamic frameworks.
+* Upgrade AppMetrica SDK for iOS (3.8.2). Fixed an issue #2 with "helper" command line tool in
+  dynamic frameworks.
 
 ## 0.0.4
 
 * Upgrade AppMetrica SDK (Android 3.7.2/iOS 3.8.0).
 * Add `sendEventsBuffer` function. Sends stored events from the buffer.
-* Android only. Add `maxReportsInDatabaseCount` activation parameter - maximum number of events that can be stored in the database on the phone before being sent to AppMetrica.
+* Android only. Add `maxReportsInDatabaseCount` activation parameter - maximum number of events that
+  can be stored in the database on the phone before being sent to AppMetrica.
 
 ## 0.0.3
 

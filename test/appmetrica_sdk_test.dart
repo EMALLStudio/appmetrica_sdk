@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:appmetrica_sdk/appmetrica_sdk.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('emallstudio.com/appmetrica_sdk');
@@ -14,8 +13,4 @@ void main() {
   tearDown(() {
     channel.setMockMethodCallHandler(null);
   });
-
-  /*test('getPlatformVersion', () async {
-    expect(await AppmetricaSdk.platformVersion, '42');
-  });*/
 }
