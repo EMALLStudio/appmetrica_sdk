@@ -5,7 +5,7 @@
 
 ## 0.0.7+1
 
-* Upgrade AppMetrica SDK (Android 3.21.0/iOS 3.16.0).
+* Upgrade AppMetrica SDK (Android 3.21.0/iOS 4.0.0).
 
 ## 0.0.7
 
