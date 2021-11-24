@@ -1,7 +1,8 @@
 ## 0.1.0
 
-* Upgrade AppMetrica SDK 4.0.0
+* Upgrade AppMetrica Android SDK to 4.0.0
 * Upgrade android plugin to kotlin
+* Add *reportAppOpen* and *requestDeferredDeeplink* methods
 
 ## 0.0.7+1
 

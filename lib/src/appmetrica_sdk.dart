@@ -4,9 +4,25 @@
 
 part of appmetrica_sdk;
 
-/// Appmetrica SDK singleton.
+/// Called if it is possible to get a delayed deeplink
+typedef OnDeferredDeeplinkLoaded = Future<dynamic> Function(String link);
+
+/// Called if an error occurs while trying to get the parameters of a pending deeplink
+/// [name] - name of error
+/// [description] - description of error
+/// [referrer] - Google Play Install Referrer if PARSE_ERROR
+typedef OnDeferredDeeplinkError = Future<dynamic> Function({
+  required String name,
+  required String description,
+  String? referrer,
+});
+
+/// Appmetrica SDK singleton
 class AppmetricaSdk {
   String? _apiKey;
+  OnDeferredDeeplinkLoaded? _onDeferredDeeplinkLoaded;
+  OnDeferredDeeplinkError? _onDeferredDeeplinkError;
+
   final MethodChannel _channel;
   static AppmetricaSdk? _instance;
 
@@ -20,6 +36,20 @@ class AppmetricaSdk {
   }
 
   AppmetricaSdk.private(this._channel);
+
+  Future<dynamic> _handleMethod(MethodCall call) async {
+    switch (call.method) {
+      case 'onDeferredDeeplinkLoaded':
+        return _onDeferredDeeplinkLoaded?.call(call.arguments as String);
+      case 'onDeferredDeeplinkError':
+        final data = call.arguments.cast<dynamic, String?>();
+        return _onDeferredDeeplinkError?.call(
+          name: data['name'],
+          description: data['description'],
+          referrer: data['referrer'],
+        );
+    }
+  }
 
   /// Initializes the library in an application with given parameters.
   ///
@@ -210,10 +240,10 @@ class AppmetricaSdk {
     return;
   }
 
-  // Sets referral URL for this installation. This might be required to track
-  // some specific traffic sources like Facebook.
-  // Referral URL reporting is no longer available
-  // but many agencies use this report
+  /// Sets referral URL for this installation. This might be required to track
+  /// some specific traffic sources like Facebook.
+  /// Referral URL reporting is no longer available
+  /// but many agencies use this report
   Future<void> reportReferralUrl(String referral) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
@@ -224,6 +254,44 @@ class AppmetricaSdk {
         'referral': referral,
       },
     );
+    return;
+  }
+
+  /// Sending a message about opening an application using deeplink
+  /// Android only
+  Future<void> reportAppOpen(String deeplink) async {
+    if (_apiKey == null) {
+      throw 'The API key is not set';
+    }
+
+    if (!Platform.isAndroid) return;
+
+    await _channel.invokeMethod<String>(
+      'reportAppOpen',
+      <String, dynamic>{
+        'deeplink': deeplink,
+      },
+    );
+    return;
+  }
+
+  /// Requests a deferred deeplink
+  /// Android only
+  Future<void> requestDeferredDeeplink({
+    OnDeferredDeeplinkLoaded? onDeferredDeeplinkLoaded,
+    OnDeferredDeeplinkError? onDeferredDeeplinkError,
+  }) async {
+    if (_apiKey == null) {
+      throw 'The API key is not set';
+    }
+
+    if (!Platform.isAndroid) return;
+
+    _onDeferredDeeplinkLoaded = onDeferredDeeplinkLoaded;
+    _onDeferredDeeplinkError = onDeferredDeeplinkError;
+    _channel.setMethodCallHandler(_handleMethod);
+
+    await _channel.invokeMethod<String>('requestDeferredDeeplink');
     return;
   }
 }

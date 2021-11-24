@@ -3,7 +3,10 @@
 // found in the LICENSE file.
 package com.emallstudio.appmetrica_sdk
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import com.yandex.metrica.DeferredDeeplinkListener
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
 import com.yandex.metrica.profile.Attribute
@@ -22,6 +25,31 @@ class AppMetricaSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     private var activity: FlutterActivity? = null
     private var binaryMessenger: BinaryMessenger? = null
     private var channel: MethodChannel? = null
+
+    private val deferredDeeplinkListener = object : DeferredDeeplinkListener {
+        override fun onDeeplinkLoaded(link: String) {
+            val channel = channel ?: return
+
+            Handler(Looper.getMainLooper()).post {
+                channel.invokeMethod("onDeferredDeeplinkLoaded", link)
+            }
+        }
+
+        override fun onError(error: DeferredDeeplinkListener.Error, referrer: String?) {
+            val channel = channel ?: return
+
+            Handler(Looper.getMainLooper()).post {
+                channel.invokeMethod(
+                    "onDeferredDeeplinkError",
+                    mapOf(
+                        "name" to error.name,
+                        "description" to error.description,
+                        "referrer" to referrer
+                    ),
+                )
+            }
+        }
+    }
 
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPluginBinding) {
         binaryMessenger = flutterPluginBinding.binaryMessenger
@@ -69,6 +97,8 @@ class AppMetricaSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "setUserProfileID" -> handleSetUserProfileID(call, result)
             "sendEventsBuffer" -> handleSendEventsBuffer(result)
             "reportReferralUrl" -> handleReportReferralUrl(call, result)
+            "reportAppOpen" -> handleReportAppOpen(call, result)
+            "requestDeferredDeeplink" -> handleRequestDeferredDeeplinkParameters(result)
             else -> result.notImplemented()
         }
     }
@@ -300,6 +330,27 @@ class AppMetricaSdkPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         } catch (e: Exception) {
             Log.e(TAG, "Error sets the ID of the user profile", e)
             result.error("Error sets the ID of the user profile", e.message, null)
+        }
+        result.success(null)
+    }
+
+    private fun handleReportAppOpen(call: MethodCall, result: MethodChannel.Result) {
+        try {
+            val deeplink: String = call.argument("deeplink")!!
+            YandexMetrica.reportAppOpen(deeplink)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error report app open", e)
+            result.error("Error report app open", e.message, null)
+        }
+        result.success(null)
+    }
+
+    private fun handleRequestDeferredDeeplinkParameters(result: MethodChannel.Result) {
+        try {
+            YandexMetrica.requestDeferredDeeplink(deferredDeeplinkListener)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error report app open", e)
+            result.error("Error report app open", e.message, null)
         }
         result.success(null)
     }
