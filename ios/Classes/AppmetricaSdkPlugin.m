@@ -42,6 +42,8 @@
       [self handleSendEventsBuffer:call result:result];
   } else if ([@"reportReferralUrl" isEqualToString:call.method]) {
       [self handleReportReferralUrl:call result:result];
+  } else if ([@"reportAppOpen" isEqualToString:call.method]) {
+      [self handleReportAppOpen:call result:result];
   } else {
       result(FlutterMethodNotImplemented);
   }
@@ -235,6 +237,15 @@
     NSURL *url = [[NSURL alloc] initWithString:referral];
     
     [YMMYandexMetrica reportReferralUrl:url];
+
+    result(nil);
+}
+
+- (void)handleReportAppOpen:(FlutterMethodCall*)call result:(FlutterResult)result {
+    NSString* referral = call.arguments[@"deeplink"];
+    NSURL *url = [[NSURL alloc] initWithString:referral];
+    
+    [YMMYandexMetrica handleOpenURL:url];
 
     result(nil);
 }

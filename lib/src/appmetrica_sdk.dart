@@ -258,13 +258,10 @@ class AppmetricaSdk {
   }
 
   /// Sending a message about opening an application using deeplink
-  /// Android only
   Future<void> reportAppOpen(String deeplink) async {
     if (_apiKey == null) {
       throw 'The API key is not set';
     }
-
-    if (!Platform.isAndroid) return;
 
     await _channel.invokeMethod<String>(
       'reportAppOpen',
